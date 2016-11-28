@@ -208,8 +208,8 @@
 			google.maps.event.addListener(marker, 'click', (function(marker,
 					content, infowindow) {
 				return function() {
-					alert("inside infowindow : " + content);
-					infowindow.setContent(content);
+					//alert("inside infowindow : " + content + " " + contentString);
+					infowindow.setContent(contentString);
 					infowindow.open(map, marker);
 				};
 			})(marker, content, infowindow));
@@ -300,7 +300,8 @@
 </head>
 
 <body style="font-family: sans-serif; font-weight: bold;">
-	<div id="map" style="width:50%; height: 500px; float: left; "></div> 
+	<div id="map" style="width:50%; height: 500px; float: left; "></div> <br/>
+	<h3 id="head" align="center" style="width:50%; float: left;"></h3>
 	<label>Offense Type</label>
 	<select id="offense">
 		<option selected="selected">Select</option>
@@ -318,8 +319,9 @@
 		<option selected="selected">Select</option>
 	</select>
 	<div id="div1"></div>
+	
 	<div id="chartContainer" style="width:50%; float: right; "></div>
-	<h3 id="head" align="center" style="width:50%; float: left;"></h3>
+	
 	<input type="text" hidden="hidden" id="hide" />
 	<input type="text" hidden="hidden" id="offenceHide" />
 </body>
