@@ -3,16 +3,6 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Austin Crime Rate - 2015</title>
-<style>
-html, body, table, td {
-	font-family: sans-serif;
-}
-/* 
-#map {
-	height: 100%;
-	width: 50%;
-} */
-</style>
 <!-- Replace the value of the key parameter with your own API key. -->
 <!-- <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEhL2ohUd7-RRayvmZP-vohmLhoQvgOr8&libraries=visualization"> 
@@ -218,6 +208,7 @@ html, body, table, td {
 			google.maps.event.addListener(marker, 'click', (function(marker,
 					content, infowindow) {
 				return function() {
+					alert("inside infowindow : " + content);
 					infowindow.setContent(content);
 					infowindow.open(map, marker);
 				};
@@ -288,10 +279,10 @@ html, body, table, td {
 				text : "Austin Crime Rate",
 				width : 100,
 			},
-			legend : {
+			/* legend : {
 				maxWidth : 0,
 				itemWidth : 120
-			},
+			}, */
 			data : [ {
 				type : "pie",
 				showInLegend : true,
@@ -308,52 +299,28 @@ html, body, table, td {
 	async defer></script>
 </head>
 
-<body>
-	<table width="100%" height="100%">
-	<tr>
-		<td></td>
-		<td></td>
-	</tr>
-		<tr>
-			<td width="50%" height="600px" style="border: solid;" id="map">
-				<!-- <div id="map" ></div> <br /> -->
-			</td>
-			<td width="50%" height="600px" style="border: solid;">
-				<label>Offense Type</label> 
-				<select id="offense">
-					<option selected="selected">Select</option>
-					<option id="robbery">Robbery</option>
-					<option id="burglary">Burglary</option>
-					<option id="autoTheft">Auto Theft</option>
-					<option id="aggAssualt">Agg Assault</option>
-					<option id="theft">Theft</option>
-					<option id="murder">Murder</option>
-				</select> 
-				<input type="button" id="checkButton" name="checkButton" value="Check" onclick="checkStats()" />
-				<label>ZIP</label> 
-					<select id="zip">
-					<option selected="selected">Select</option>
-				</select>
-				<div id="div1"></div>
-				<div id="chartContainer" ></div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<h3 id="head" align="center"></h3> 
-			</td>
-			<td>
-				 
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" hidden="hidden" id="hide" /> 
-			</td>
-			<td>
-				<input type="text" hidden="hidden" id="offenceHide" />
-			</td>
-		</tr>
-	</table>
+<body style="font-family: sans-serif; font-weight: bold;">
+	<div id="map" style="width:50%; height: 500px; float: left; "></div> 
+	<label>Offense Type</label>
+	<select id="offense">
+		<option selected="selected">Select</option>
+		<option id="robbery">Robbery</option>
+		<option id="burglary">Burglary</option>
+		<option id="autoTheft">Auto Theft</option>
+		<option id="aggAssualt">Agg Assault</option>
+		<option id="theft">Theft</option>
+		<option id="murder">Murder</option>
+	</select>
+	<input type="button" id="checkButton" name="checkButton" value="Check"
+		onclick="checkStats()" />
+	<label>ZIP</label>
+	<select id="zip">
+		<option selected="selected">Select</option>
+	</select>
+	<div id="div1"></div>
+	<div id="chartContainer" style="width:50%; float: right; "></div>
+	<h3 id="head" align="center" style="width:50%; float: left;"></h3>
+	<input type="text" hidden="hidden" id="hide" />
+	<input type="text" hidden="hidden" id="offenceHide" />
 </body>
 </html>
