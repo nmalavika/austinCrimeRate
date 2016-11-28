@@ -194,10 +194,11 @@
 			firstThreey[i] = arry[i];
 
 			contentString = '<h3>' + arr1[i] + '</h3>';
+			
 			var infowindow = new google.maps.InfoWindow({
 				content : contentString
 			});
-
+			console.log("arr1 : " + arr1[i] + " fsdf " + contentString + " ffsf " + content);
 			var marker = new google.maps.Marker({
 				position : new google.maps.LatLng(firstThreex[i], firstThreey[i]),
 				label : labels[labelIndex++ % labels.length],
@@ -209,8 +210,9 @@
 					content, infowindow) {
 				return function() {
 					//alert("inside infowindow : " + content + " " + contentString);
-					infowindow.setContent(contentString);
+					infowindow.setContent(arr1[i]);
 					infowindow.open(map, marker);
+					console.log("content : " + content);
 				};
 			})(marker, content, infowindow));
 		}
