@@ -4,39 +4,28 @@
 <meta charset="ISO-8859-1">
 <title>Austin Crime Rate - 2015</title>
 <style>
-html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-#map {
-	height: 90%;
-	width: 100%;
-}
-
-h1 {
+html, body, table, td {
 	font-family: sans-serif;
 }
-
-#div1 {
-	width: 200px;
-	height: 100px
-}
-
+/* 
+#map {
+	height: 100%;
+	width: 50%;
+} */
 </style>
 <!-- Replace the value of the key parameter with your own API key. -->
 <!-- <script
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEhL2ohUd7-RRayvmZP-vohmLhoQvgOr8&libraries=visualization"> 
 </script> -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="canvasjs.min.js"></script>
 
 <script>
 	var map, heatmap, content;
 	var z = new Array();
-	
+
 	function initEventBinding() {
 		$("#offense").change(function() {
 			var selectVal = $("#offense").val();
@@ -70,11 +59,12 @@ h1 {
 				lat : 30.2672,
 				lng : -97.7431
 			},
-			zoom : 9
+			zoom : 10
+			
 		});
 
 		var defaultFile = "latest_zip_count_coords.json";
-		
+
 		var a = new Array();
 		/* for(var i=0; i<z.length; i++){
 			a[i] = changeIntensity(z);	
@@ -83,7 +73,7 @@ h1 {
 		heatmap = new google.maps.visualization.HeatmapLayer({
 			//data : fetchDataPoints(defaultFile),
 			map : map,
-			//radius : z
+		//radius : z
 		});
 		handleZipChange(defaultFile);
 		loadZipDropdown();
@@ -102,7 +92,7 @@ h1 {
 		//console.log("data : " + data);
 		heatmap.setData(data);
 	}
-	
+
 	function changeIntensity(z) {
 		//alert("inside changeIntensity");
 		//var weight = y;
@@ -111,16 +101,13 @@ h1 {
 		        weight: Math.sqrt(z) * 100
 		      };
 		      heatmap.set('weight', weightedLoc); */
-		      heatmap.set('radius', 40);
-		      //heatmap.set('radius', heatmap.get('radius') ? 50 : 50);
-		console.log("weight : " + z);
-		console.log("radius : " + heatmap.get('radius'));
+		heatmap.set('radius', 30);
 		return z;
-	} 
+	}
 
 	function fetchDataPoints(file) {
 		var x = new Array();
-		
+
 		d3.json(file, function(error, data) {
 			//console.log('New data file loaded: ' + file	+ ' *****************');
 			for (var i = 0; i < data.length; i++) {
@@ -138,11 +125,13 @@ h1 {
 			console.log("z size - " + z.length);
 		});
 		document.getElementById("hide").value = file;
-		var type = document.getElementById('offense').options[document.getElementById('offense').selectedIndex].text;
+		var type = document.getElementById('offense').options[document
+				.getElementById('offense').selectedIndex].text;
 		if (type == "Select") {
 			document.getElementById("head").innerHTML = "Heatmap with ZIP codes";
 		} else
-			document.getElementById("head").innerHTML = "Heatmap for Offense type - " + type;
+			document.getElementById("head").innerHTML = "Heatmap for Offense type - "
+					+ type;
 	}
 
 	function checkStats() {
@@ -189,7 +178,8 @@ h1 {
 
 							showMarkers(firstThreex, firstThreey, arrx, arry, arr1);
 
-							document.getElementById("div1").innerHTML = "Top 10 safest ZIP areas are : \n\n" + first;
+							document.getElementById("div1").innerHTML = "Top 10 safest ZIP areas are : </br>"
+									+ first;
 						});
 	}
 
@@ -198,107 +188,116 @@ h1 {
 		var labels = '123';
 		var labelIndex = 0;
 		var markers = [];
-		
+
 		var contentString = '';
 		var x;
-		
+
 		// remove previous markers
-		for(var i = 0; i < ALL_MARKERS.length; i++) {
+		for (var i = 0; i < ALL_MARKERS.length; i++) {
 			var marker = ALL_MARKERS[i];
 			marker.setMap(null);
-	    }
+		}
 		ALL_MARKERS.splice(0, ALL_MARKERS.length); // empty the array
-		
+
 		for (var i = 0; i < 3; i++) {
 			firstThreex[i] = arrx[i];
 			firstThreey[i] = arry[i];
-			
-			contentString = '<h3>'+ arr1[i] + '</h3>';
+
+			contentString = '<h3>' + arr1[i] + '</h3>';
 			var infowindow = new google.maps.InfoWindow({
-		          content: contentString
-		        });
-			
+				content : contentString
+			});
+
 			var marker = new google.maps.Marker({
 				position : new google.maps.LatLng(firstThreex[i], firstThreey[i]),
-				label: labels[labelIndex++ % labels.length],
+				label : labels[labelIndex++ % labels.length],
 				map : map,
 			});
 			ALL_MARKERS.push(marker);
-			
-			google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
-			    return function() {
-			        infowindow.setContent(content);
-			        infowindow.open(map,marker);
-			    };
-			})(marker,content,infowindow));  
+
+			google.maps.event.addListener(marker, 'click', (function(marker,
+					content, infowindow) {
+				return function() {
+					infowindow.setContent(content);
+					infowindow.open(map, marker);
+				};
+			})(marker, content, infowindow));
 		}
 	}
-	
-	
+
 	function compareNumbers(a, b) {
 		return a - b;
 	}
-	
+
 	function loadZipDropdown() {
 		d3.csv("all_offense_count.csv", function(data3) {
-				data3.forEach(function(i) {
+			data3.forEach(function(i) {
 				i.Zip = +i.Zip;
-			    $('#zip').append($('<option>', { 
-			        value: i.Zip,
-			        text : i.Zip 
-			    }));
+				$('#zip').append($('<option>', {
+					value : i.Zip,
+					text : i.Zip
+				}));
 			});
-			
-			$("#zip").change(function () {
+
+			$("#zip").change(function() {
 				var str = "";
-			    $("#zip option:selected").each(function() {
-			      str += $(this).text() + " ";
-			      console.log("str - " + str);
-			      showSummary(data3, str);
-			    });
-			  }).change();
+				$("#zip option:selected").each(function() {
+					str += $(this).text() + " ";
+					console.log("str - " + str);
+					showSummary(data3, str);
+				});
+			}).change();
 		});
 	}
-	
-	function showSummary(data3, str){
-			var arr = [];
-			var datapointsforzip = [];
-			for(var i=0; i<data3.length; i++){
-				if(str == data3[i].Zip){
-					arr[0]=data3[i].theftCount;
-					arr[1]=data3[i].aggAssaultCount;
-					arr[2]=data3[i].burglaryCount;
-					arr[3]=data3[i].autoTheftCount;
-					arr[4]=data3[i].robberyCount;
-					arr[5]=data3[i].murderCount;
-					datapointsforzip = [
-						{ y: arr[0], indexLabel: "Theft" },
-						{ y: arr[1], indexLabel: "Agg Assualt" },
-						{ y: arr[2], indexLabel: "Burglary" },
-						{ y: arr[3], indexLabel: "Auto Theft"},
-						{ y: arr[4], indexLabel: "Robbery" },
-						{ y: arr[5], indexLabel: "Murder"},
-						];
-				}
+
+	function showSummary(data3, str) {
+		var arr = [];
+		var datapointsforzip = [];
+		for (var i = 0; i < data3.length; i++) {
+			if (str == data3[i].Zip) {
+				arr[0] = data3[i].theftCount;
+				arr[1] = data3[i].aggAssaultCount;
+				arr[2] = data3[i].burglaryCount;
+				arr[3] = data3[i].autoTheftCount;
+				arr[4] = data3[i].robberyCount;
+				arr[5] = data3[i].murderCount;
+				datapointsforzip = [ {
+					y : arr[0],
+					indexLabel : "Theft"
+				}, {
+					y : arr[1],
+					indexLabel : "Agg Assualt"
+				}, {
+					y : arr[2],
+					indexLabel : "Burglary"
+				}, {
+					y : arr[3],
+					indexLabel : "Auto Theft"
+				}, {
+					y : arr[4],
+					indexLabel : "Robbery"
+				}, {
+					y : arr[5],
+					indexLabel : "Murder"
+				}, ];
 			}
-			
-		var chart = new CanvasJS.Chart("chartContainer",
-		{
-			title:{
-				text: "Austin Crime Rate"
+		}
+
+		var chart = new CanvasJS.Chart("chartContainer", {
+			title : {
+				text : "Austin Crime Rate",
+				width : 100,
 			},
-			legend: {
-				maxWidth: 350,
-				itemWidth: 120
+			legend : {
+				maxWidth : 0,
+				itemWidth : 120
 			},
-			data: [
-			{
-				type: "pie",
-				showInLegend: true,
-				legendText: "{indexLabel}",
-				dataPoints: datapointsforzip
-			}
-			]
+			data : [ {
+				type : "pie",
+				showInLegend : true,
+				legendText : "{indexLabel}",
+				dataPoints : datapointsforzip
+			} ]
 		});
 		chart.render();
 	}
@@ -310,17 +309,18 @@ h1 {
 </head>
 
 <body>
-	<div id="map"></div>
-	<br />
-	<h3 id="head" align="center"></h3>
-	<input type="text" hidden="hidden" id="hide" />
-	<input type="text" hidden="hidden" id="offenceHide" />
-	<table>
+	<table width="100%" height="100%">
+	<tr>
+		<td></td>
+		<td></td>
+	</tr>
 		<tr>
-			<td>
-				<label>Offence Type</label>
+			<td width="50%" height="600px" style="border: solid;" id="map">
+				<!-- <div id="map" ></div> <br /> -->
 			</td>
-			<td><select id="offense">
+			<td width="50%" height="600px" style="border: solid;">
+				<label>Offense Type</label> 
+				<select id="offense">
 					<option selected="selected">Select</option>
 					<option id="robbery">Robbery</option>
 					<option id="burglary">Burglary</option>
@@ -328,23 +328,32 @@ h1 {
 					<option id="aggAssualt">Agg Assault</option>
 					<option id="theft">Theft</option>
 					<option id="murder">Murder</option>
-			</select></td>
-			<td></td>
-			<td><input type="button" id="checkButton" name="checkButton"
-				value="Check" onclick="checkStats()" /></td>
+				</select> 
+				<input type="button" id="checkButton" name="checkButton" value="Check" onclick="checkStats()" />
+				<label>ZIP</label> 
+					<select id="zip">
+					<option selected="selected">Select</option>
+				</select>
+				<div id="div1"></div>
+				<div id="chartContainer" ></div>
+			</td>
 		</tr>
 		<tr>
 			<td>
-				<label>ZIP</label>
+				<h3 id="head" align="center"></h3> 
 			</td>
-			<td><select id="zip">
-					<option selected="selected">Select</option>
-			</select></td>
+			<td>
+				 
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" hidden="hidden" id="hide" /> 
+			</td>
+			<td>
+				<input type="text" hidden="hidden" id="offenceHide" />
+			</td>
 		</tr>
 	</table>
-	<br/>
-	<div id="div1"></div>
-	<div id="chartContainer" style="border: solid; width: 50%; height: 600px;">
-	</div>
 </body>
 </html>
